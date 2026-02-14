@@ -91,3 +91,101 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Trading Life-Line</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #0b0e11; color: white; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+        .header { background: #1e2329; padding: 15px; text-align: center; border-bottom: 2px solid #f0b90b; }
+        #chart-area { flex: 1; min-height: 300px; }
+        .chat-section { height: 350px; background: #161a1e; display: flex; flex-direction: column; border-top: 1px solid #333; }
+        .messages { flex: 1; padding: 15px; overflow-y: auto; font-size: 14px; }
+        .ai-msg { color: #f0b90b; margin-bottom: 10px; background: #2b3139; padding: 10px; border-radius: 8px; }
+        .user-msg { color: #fff; text-align: right; margin-bottom: 10px; }
+        .controls { padding: 15px; display: flex; gap: 10px; background: #1e2329; }
+        input { flex: 1; padding: 12px; border-radius: 5px; border: none; outline: none; background: #2b3139; color: white; }
+        button { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .btn-send { background: #f0b90b; color: black; }
+        .btn-mic { background: #eb4d4b; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h2>MY AI LIFE-LINE (LIVE)</h2>
+</div>
+
+<div id="chart-area">
+    <div id="tradingview_widget" style="height: 100%;"></div>
+</div>
+
+<div class="chat-section">
+    <div class="messages" id="msgBox">
+        <div class="ai-msg">হ্যালো! আমি আপনার লাইভ ট্রেডিং পার্টনার। আমি আপনার কথা শুনতে পারি এবং উত্তর দিতে পারি। মাইক্রোফোন বাটনে ক্লিক করে কথা বলুন।</div>
+    </div>
+    
+    <div class="controls">
+        <input type="text" id="userInput" placeholder="এখানে লিখুন বা মাইক্রোফোন ব্যবহার করুন...">
+        <button class="btn-mic" onclick="startVoice()">🎤 কথা বলুন</button>
+        <button class="btn-send" onclick="handleResponse()">পাঠান</button>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script>
+    // TradingView Chart Setup
+    new TradingView.widget({
+        "autosize": true,
+        "symbol": "BINANCE:BTCUSDT",
+        "interval": "D",
+        "theme": "dark",
+        "container_id": "tradingview_widget"
+    });
+
+    const msgBox = document.getElementById('msgBox');
+    const userInput = document.getElementById('userInput');
+
+    // এআই-এর কথা বলার ফাংশন (Text to Speech)
+    function speak(text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'bn-BD'; // বাংলা ভাষা
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // আপনার কথা শোনার ফাংশন (Speech to Text)
+    function startVoice() {
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'bn-BD';
+        recognition.start();
+
+        recognition.onresult = (event) => {
+            const speechToText = event.results[0][0].transcript;
+            userInput.value = speechToText;
+            handleResponse();
+        };
+    }
+
+    function handleResponse() {
+        const text = userInput.value;
+        if (!text) return;
+
+        // ইউজারের মেসেজ দেখানো
+        msgBox.innerHTML += `<div class="user-msg">আপনি: ${text}</div>`;
+        
+        // এআই-এর নকল উত্তর (এখানে পরে আসল এআই যোগ করা হবে)
+        setTimeout(() => {
+            const reply = "আমি বুঝতে পেরেছি। লাইভ মার্কেট ডাটা অনুযায়ী ট্রেডিং পরিস্থিতি এখন স্থিতিশীল। আপনি কি আরও কিছু জানতে চান?";
+            msgBox.innerHTML += `<div class="ai-msg">AI: ${reply}</div>`;
+            speak(reply); // এআই উত্তরটি মুখে বলবে
+            msgBox.scrollTop = msgBox.scrollHeight;
+        }, 1000);
+
+        userInput.value = "";
+    }
+</script>
+
+</body>
+</html>
