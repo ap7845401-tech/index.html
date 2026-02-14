@@ -1,0 +1,93 @@
+# index.html<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Trading AI Assistant</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #0b0e11; color: white; margin: 0; padding: 10px; }
+        .container { max-width: 1200px; margin: auto; }
+        .header { text-align: center; padding: 20px; color: #f0b90b; } /* Binance Yellow Style */
+        
+        /* Live Chart Area */
+        .chart-container { height: 400px; background: #161a1e; border-radius: 10px; overflow: hidden; margin-bottom: 20px; border: 1px solid #333; }
+        
+        /* Chat UI */
+        .ai-card { background: #1e2329; border-radius: 15px; overflow: hidden; display: flex; flex-direction: column; height: 450px; }
+        .chat-display { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .msg { padding: 12px; border-radius: 10px; max-width: 85%; line-height: 1.5; }
+        .ai-msg { background: #2b3139; align-self: flex-start; border-left: 4px solid #f0b90b; }
+        .user-msg { background: #f0b90b; color: black; align-self: flex-end; font-weight: bold; }
+        
+        .input-box { display: flex; padding: 15px; background: #161a1e; gap: 10px; }
+        input { flex: 1; background: #2b3139; border: none; padding: 12px; color: white; border-radius: 8px; outline: none; }
+        button { background: #f0b90b; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>TRADING AI LIVE 🚀</h1>
+        <p>লাইভ মার্কেট এবং ট্রেডিং গাইড</p>
+    </div>
+
+    <div class="chart-container">
+        <div id="tradingview_widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+        <script type="text/javascript">
+          new TradingView.widget({
+          "autosize": true,
+          "symbol": "BINANCE:BTCUSDT",
+          "interval": "D",
+          "timezone": "Etc/UTC",
+          "theme": "dark",
+          "style": "1",
+          "locale": "en",
+          "toolbar_bg": "#f1f3f6",
+          "enable_publishing": false,
+          "allow_symbol_change": true,
+          "container_id": "tradingview_widget"
+        });
+        </script>
+    </div>
+
+    <div class="ai-card">
+        <div class="chat-display" id="chatDisplay">
+            <div class="msg ai-msg">স্বাগতম! আমি আপনার লাইভ ট্রেডিং এসিস্ট্যান্ট। আপনি আমাকে বিটকয়েন, গোল্ড বা যে কোনো মার্কেট সম্পর্কে প্রশ্ন করতে পারেন।</div>
+        </div>
+        <div class="input-box">
+            <input type="text" id="userInput" placeholder="ট্রেডিং নিয়ে প্রশ্ন করুন (যেমন: BTC এর দাম কত?)...">
+            <button onclick="askAI()">জিজ্ঞেস করুন</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function askAI() {
+        const input = document.getElementById('userInput');
+        const display = document.getElementById('chatDisplay');
+        if (input.value.trim() === "") return;
+
+        // User Message
+        const uDiv = document.createElement('div');
+        uDiv.className = 'msg user-msg';
+        uDiv.innerText = input.value;
+        display.appendChild(uDiv);
+
+        // Simulated AI response for now
+        setTimeout(() => {
+            const aDiv = document.createElement('div');
+            aDiv.className = 'msg ai-msg';
+            aDiv.innerText = "আমি বর্তমানে লাইভ ডেটা এনালাইসিস করছি। বিটকয়েন (BTC) বর্তমানে বুলিশ ট্রেন্ডে আছে। আপনার পরবর্তী প্রশ্নটি কি?";
+            display.appendChild(aDiv);
+            display.scrollTop = display.scrollHeight;
+        }, 1000);
+
+        input.value = "";
+        display.scrollTop = display.scrollHeight;
+    }
+</script>
+
+</body>
+</html>
